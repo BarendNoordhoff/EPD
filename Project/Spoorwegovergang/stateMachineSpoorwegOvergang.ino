@@ -82,7 +82,7 @@ void spoorwegOvergangLoop() {
 
       if (millis() - redLightInterval >= spoorwegPrevious || getNorthButtonPressed() || getSouthButtonPressed()) {
         spoorwegOvergangEastRoodExit();
-        spoorwegOvergangState = STOPLICHT_OOST_GROEN;
+        spoorwegOvergangState = RUST;
         spoorwegOvergangEastGroenEntry();
       }
       break;
@@ -109,7 +109,7 @@ void spoorwegOvergangLoop() {
 
       if (millis() - redLightInterval >= spoorwegPrevious || getNorthButtonPressed() || getSouthButtonPressed()) {
         spoorwegOvergangWestRoodExit();
-        spoorwegOvergangState = STOPLICHT_WEST_GROEN;
+        spoorwegOvergangState = RUST;
         spoorwegOvergangWestGroenEntry();
       }
       break;
