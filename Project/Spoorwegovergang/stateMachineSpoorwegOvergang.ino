@@ -32,7 +32,7 @@ void spoorwegOvergangSetup() {
   setupServo();
 
   setTrafficLightsRed();
-    
+  
   // spoorwegOvergangState = RUST;
   // spoorwegRustEntry();
 }
@@ -100,7 +100,7 @@ void spoorwegOvergangLoop() {
 
       if (millis() - yellowLightInterval >= spoorwegPrevious || getNorthButtonPressed() || getSouthButtonPressed()) {
         spoorwegOvergangWestGeelExit();
-        spoorwegOvergangState = STOPLICHT_WEST_GROEN;
+        spoorwegOvergangState = STOPLICHT_WEST_ROOD;
         spoorwegOvergangWestRoodEntry();
       }
       break;
@@ -109,7 +109,7 @@ void spoorwegOvergangLoop() {
 
       if (millis() - redLightInterval >= spoorwegPrevious || getNorthButtonPressed() || getSouthButtonPressed()) {
         spoorwegOvergangWestRoodExit();
-        spoorwegOvergangState = STOPLICHT_WEST_ROOD;
+        spoorwegOvergangState = STOPLICHT_WEST_GROEN;
         spoorwegOvergangWestGroenEntry();
       }
       break;
