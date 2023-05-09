@@ -5,24 +5,24 @@ bool westButtonPressed = false;
 bool getWestButtonPressed() {
   return westButtonPressed;
 }
-void setWestButtonPressed(bool newNorthButton) {
-  westButtonPressed = newNorthButton;
+void setWestButtonPressed(bool newWestButton) {
+  westButtonPressed = newWestButton;
 }
 
 bool eastButtonPressed = false;
 bool getEastButtonPressed() {
   return eastButtonPressed;
 }
-void setEastButtonPressed(bool newNorthButton) {
-  eastButtonPressed = newNorthButton;
+void setEastButtonPressed(bool newEastButton) {
+  eastButtonPressed = newEastButton;
 }
 
 bool southButtonPressed = false;
 bool getSouthButtonPressed() {
   return southButtonPressed;
 }
-void setSoutButtonPressed(bool newNorthButton) {
-  southButtonPressed = newNorthButton;
+void setSoutButtonPressed(bool newSouthButton) {
+  southButtonPressed = newSouthButton;
 }
 
 bool northButtonPressed = false;
@@ -48,9 +48,9 @@ void buttonLoop() {
   }
 
   if (analogRead(A1)) {
-    southButtonPressed = true;
+    eastButtonPressed = true;
   } else {
-    southButtonPressed = false;
+    eastButtonPressed = false;
   }
 
   if (analogRead(A2)) {

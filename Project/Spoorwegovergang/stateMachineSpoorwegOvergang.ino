@@ -31,10 +31,9 @@ void spoorwegOvergangSetup() {
   setupShiftRegister();
   setupServo();
 
-  setTrafficLightsRed();
   
-  // spoorwegOvergangState = RUST;
-  // spoorwegRustEntry();
+  spoorwegOvergangState = RUST;
+  spoorwegRustEntry();
 }
 
 void spoorwegOvergangLoop() {
