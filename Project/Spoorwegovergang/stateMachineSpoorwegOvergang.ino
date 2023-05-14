@@ -207,7 +207,7 @@ void spoorwegOvergangEastGroenDo() {
 }
 
 void spoorwegOvergangEastGroenExit() {
-  setTrafficLightGreen(false);
+  // setTrafficLightGreen(true);
 }
 
 // Stooplicht oost geel
