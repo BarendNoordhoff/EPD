@@ -81,7 +81,7 @@ void setShiftRegister(byte pattern) {
   digitalWrite(latchPin, HIGH); 
 }
 
-bool counterDown;
+bool counterDown = false;
 
 bool isCounterDown() {
   return counterDown;
@@ -95,9 +95,11 @@ void countDown() {
       countDownCount++;
     }
   }
+  counterDown = true;
 }
 
 
 void resetTimer() {
   countDownCount = 5;
+  counterDown = false;
 }

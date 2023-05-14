@@ -154,7 +154,6 @@ void spoorwegOvergangLoop() {
       break;
     case KNIPPER_GEEL:
       spoorwegKnipperGeelDo();
-
       if (getSouthButtonPressed() && getNorthButtonPressed()) {
         setWestButtonPressed(false);
         setEastButtonPressed(false);
@@ -174,7 +173,6 @@ void spoorwegOvergangLoop() {
       break;  
     case AFTELLEN:
       spoorwegAftellenDo();
-
       if (isCounterDown()) {
         spoorwegAftellenExit();
         spoorwegOvergangState = RUST;
