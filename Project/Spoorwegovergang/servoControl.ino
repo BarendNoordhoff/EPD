@@ -1,6 +1,6 @@
 #include <Servo.h>
 
-const int servoPin = 9;
+const int servoPin = 11;
 
 const int minArmRotation = 0;
 const int maxArmRotation = 180;

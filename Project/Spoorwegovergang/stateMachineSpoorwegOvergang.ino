@@ -37,6 +37,7 @@ void spoorwegOvergangSetup() {
 }
 
 void spoorwegOvergangLoop() {
+  Serial.println(spoorwegOvergangState);
   switch(spoorwegOvergangState) {
     case RUST:
       spoorwegRustDo();
@@ -298,6 +299,7 @@ void spoorwegAankomstTreinEntry() {
 }
 
 void spoorwegAankomstTreinDo() {
+  turnAllLedOff();
   blinkYellowLights();
   tickBuzzer();
   servoMoveDown();
@@ -313,6 +315,7 @@ void spoorwegKnipperGeelEntry() {
 }
 
 void spoorwegKnipperGeelDo() {
+  turnAllLedOff();
   blinkYellowLights();
 }
 
@@ -327,6 +330,7 @@ void spoorwegTreinVetrekkenEntry() {
 }
 
 void spoorwegTreinVetrekkenDo() {
+  turnAllLedOff();
   blinkYellowLights();
   tickBuzzer();
   servoMoveUp();
@@ -342,6 +346,7 @@ void spoorwegAftellenEntry() {
 }
 
 void spoorwegAftellenDo() {
+  turnAllLedOff();
   blinkYellowLights();
   countDown();
   tickBuzzerThreeTimes();

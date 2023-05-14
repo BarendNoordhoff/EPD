@@ -1,4 +1,4 @@
-int buzzerPin = 8;
+int buzzerPin = 12;
 int buzzerInterval = 400;
 int shortBuzzerInterval = 200;
 

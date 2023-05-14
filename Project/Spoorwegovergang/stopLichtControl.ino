@@ -1,3 +1,7 @@
+unsigned long int yellowlightPrevious = 0;
+unsigned long yellowlightInterval = 1000;
+
+bool yellowLightOn = false;
 
 //Groen stoplicht control
 
@@ -65,5 +69,22 @@ void setTrafficLightRed(bool West) {
       turnLedOff(i + 3);
     }
     turnLedOn(5);
+  }
+}
+
+
+void blinkYellowLights() {
+  if (millis() - yellowlightPrevious >= yellowlightInterval) {
+    yellowlightPrevious = millis();
+  
+    if (yellowLightOn) {
+      turnLedOn(1);
+      turnLedOn(4);
+      yellowLightOn = false;
+    } else {
+      turnLedOff(1);
+      turnLedOff(4);
+      yellowLightOn = true;
+    }
   }
 }

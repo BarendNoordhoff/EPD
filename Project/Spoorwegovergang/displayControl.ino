@@ -1,24 +1,29 @@
-int latchPin = 3;
-int clockPin = 4;
-int dataPin = 2;
+int dataPin = 8;
+int latchPin = 9;
+int clockPin = 10;
 
-unsigned long countdownPrevious = 0;
+unsigned long int countdownPrevious;
 unsigned long countdownInterval = 1000;
-int countDownCount = 5;
+int countDownCount = 0;
 
 const int fontCount = 8;
 byte font[] = {
-  B11111010, // 0
-  B01100000, // 1
-  B11011100, // 2
-  B11101100, // 3
-  B01100110, // 4
-  B10101110, // 5
-  B10111110, // 6
-  B11100000, // 7
-  B11111110, // 8
-  B11101110, // 9
-  B00000000, // Empty
+ B11111100, // 0
+ B01100000, // 1
+ B11011010, // 2
+ B11110010, // 3
+ B01100110, // 4
+ B10110110, // 5
+ B10111110, // 6
+ B11100000, // 7
+ B11111110, // 8
+ B11110110, // 9
+ B11101110, // A
+ B00111110, // b
+ B10011100, // C
+ B01111010, // d
+ B10011110, // E
+ B10001110, // F
 };
 
 byte getFont(int index) {
@@ -83,17 +88,11 @@ bool isCounterDown() {
 }
 
 void countDown() {
-  unsigned long currentMillis = millis();
-  counterDown = false;
-
-  if (currentMillis - countdownPrevious >= countdownInterval) {
-    setShiftRegister(font[countDownCount]);
-    countdownPrevious = currentMillis;
-    countDownCount--;
-    
-    if (countDownCount < 0) {
-      countDownCount = 0;
-      counterDown = true;
+  while (countDownCount < 6) {
+    if (millis() - countdownPrevious >= countdownInterval) {
+      setShiftRegister(getFont(5 - countDownCount));
+      countdownPrevious = millis();
+      countDownCount++;
     }
   }
 }

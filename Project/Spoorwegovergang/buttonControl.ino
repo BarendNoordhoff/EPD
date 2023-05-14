@@ -1,6 +1,8 @@
 int buttonPins[] = {A0, A1, A2, A3};
 int buttonCount = 4;
 
+// West button control
+
 bool westButtonPressed = false;
 bool getWestButtonPressed() {
   return westButtonPressed;
@@ -8,6 +10,8 @@ bool getWestButtonPressed() {
 void setWestButtonPressed(bool newWestButton) {
   westButtonPressed = newWestButton;
 }
+
+// East button control
 
 bool eastButtonPressed = false;
 bool getEastButtonPressed() {
@@ -17,6 +21,8 @@ void setEastButtonPressed(bool newEastButton) {
   eastButtonPressed = newEastButton;
 }
 
+// South button control
+
 bool southButtonPressed = false;
 bool getSouthButtonPressed() {
   return southButtonPressed;
@@ -24,6 +30,8 @@ bool getSouthButtonPressed() {
 void setSoutButtonPressed(bool newSouthButton) {
   southButtonPressed = newSouthButton;
 }
+
+// North button control
 
 bool northButtonPressed = false;
 bool getNorthButtonPressed() {
@@ -41,27 +49,27 @@ void buttonSetup() {
 }
 
 void buttonLoop() {
-  if (analogRead(A0)) {
+  if (analogRead(A0) > 500) {
     westButtonPressed = true;
   } else {
     westButtonPressed = false;
   }
 
-  if (analogRead(A1)) {
+  if (analogRead(A1) > 500) {
     eastButtonPressed = true;
   } else {
     eastButtonPressed = false;
   }
 
-  if (analogRead(A2)) {
+  if (analogRead(A2) > 500) {
     southButtonPressed = true;
   } else {
     southButtonPressed = false;
   }
 
-  if (analogRead(A3)) {
-    eastButtonPressed = true;
+  if (analogRead(A3) > 500) {
+    northButtonPressed = true;
   } else {
-    eastButtonPressed = false;
+    northButtonPressed = false;
   }
 }
