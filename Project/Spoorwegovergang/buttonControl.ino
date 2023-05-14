@@ -50,15 +50,15 @@ void buttonSetup() {
 
 void buttonLoop() {
   if (analogRead(A0) > 500) {
-    westButtonPressed = true;
-  } else {
-    westButtonPressed = false;
-  }
-
-  if (analogRead(A1) > 500) {
     eastButtonPressed = true;
   } else {
     eastButtonPressed = false;
+  }
+
+  if (analogRead(A1) > 500) {
+    northButtonPressed = true;
+  } else {
+    northButtonPressed = false;
   }
 
   if (analogRead(A2) > 500) {
@@ -68,8 +68,8 @@ void buttonLoop() {
   }
 
   if (analogRead(A3) > 500) {
-    northButtonPressed = true;
+    westButtonPressed = true;
   } else {
-    northButtonPressed = false;
+    westButtonPressed = false;
   }
 }
