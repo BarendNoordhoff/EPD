@@ -20,7 +20,7 @@ bool isArmUp() {
 
 void setupServo() {
   servo.attach(servoPin);
-  servoMove(maxArmRotation);
+  servoMove(minArmRotation);
   servoCount = maxArmRotation;
 }
 

@@ -12,9 +12,7 @@ const int KNIPPER_GEEL = 10;
 const int TREIN_VERTREKKEN = 11;
 const int AFTELLEN = 12;
 
-
 int spoorwegOvergangState;
-
 
 int spoorwegInterval = 3000;
 unsigned long spoorwegPrevious;
@@ -62,7 +60,7 @@ void spoorwegOvergangLoop() {
     case STOPLICHT_OOST_GROEN:
       spoorwegOvergangEastGroenDo();
 
-      if (millis() - greenLightInterval >= spoorwegPrevious || getNorthButtonPressed() || getSouthButtonPressed()) {
+      if (millis() - spoorwegPrevious >= greenLightInterval) {
         spoorwegOvergangEastGroenExit();
         spoorwegOvergangState = STOPLICHT_OOST_GEEL;
         spoorwegOvergangEastGeelEntry();
@@ -75,25 +73,33 @@ void spoorwegOvergangLoop() {
     case STOPLICHT_OOST_GEEL:
       spoorwegOvergangEastGeelDo();
 
-      if (millis() - yellowLightInterval >= spoorwegPrevious || getNorthButtonPressed() || getSouthButtonPressed()) {
+      if (millis() - spoorwegPrevious >= yellowLightInterval) {
         spoorwegOvergangEastGeelExit();
         spoorwegOvergangState = STOPLICHT_OOST_ROOD;
         spoorwegOvergangEastRoodEntry();
+      } else if (getNorthButtonPressed() || getSouthButtonPressed()) {
+        spoorwegOvergangEastGeelExit();
+        spoorwegOvergangState = ONTRUIMINGS_TIJD;
+        spoorwegOntruimingsTijdEntry();
       }
       break;
     case STOPLICHT_OOST_ROOD:
       spoorwegOvergangEastRoodDo();
 
-      if (millis() - redLightInterval >= spoorwegPrevious || getNorthButtonPressed() || getSouthButtonPressed()) {
+      if (millis() - spoorwegPrevious >= redLightInterval) {
         spoorwegOvergangEastRoodExit();
         spoorwegOvergangState = RUST;
         spoorwegRustEntry();
+      } else if (getNorthButtonPressed() || getSouthButtonPressed()) {
+        spoorwegOvergangEastRoodExit();
+        spoorwegOvergangState = ONTRUIMINGS_TIJD;
+        spoorwegOntruimingsTijdEntry();
       }
       break;
     case STOPLICHT_WEST_GROEN:
       spoorwegOvergangWestGroenDo();
 
-      if (millis() - greenLightInterval >= spoorwegPrevious) {
+      if (millis() - spoorwegPrevious >= greenLightInterval) {
         spoorwegOvergangWestGroenExit();
         spoorwegOvergangState = STOPLICHT_WEST_GEEL;
         spoorwegOvergangWestGeelEntry();
@@ -106,19 +112,27 @@ void spoorwegOvergangLoop() {
     case STOPLICHT_WEST_GEEL:
       spoorwegOvergangWestGeelDo();
 
-      if (millis() - yellowLightInterval >= spoorwegPrevious || getNorthButtonPressed() || getSouthButtonPressed()) {
+      if (millis() - spoorwegPrevious >= yellowLightInterval) { 
         spoorwegOvergangWestGeelExit();
         spoorwegOvergangState = STOPLICHT_WEST_ROOD;
         spoorwegOvergangWestRoodEntry();
+      } else if (getNorthButtonPressed() || getSouthButtonPressed()) {
+        spoorwegOvergangWestGeelExit();
+        spoorwegOvergangState = ONTRUIMINGS_TIJD;
+        spoorwegOntruimingsTijdEntry();
       }
       break;
     case STOPLICHT_WEST_ROOD:
       spoorwegOvergangWestRoodDo();
-
-      if (millis() - redLightInterval >= spoorwegPrevious || getNorthButtonPressed() || getSouthButtonPressed()) {
+ 
+      if (millis() - spoorwegPrevious >= redLightInterval) {
         spoorwegOvergangWestRoodExit();
         spoorwegOvergangState = RUST;
         spoorwegRustEntry();
+      } else if (getNorthButtonPressed() || getSouthButtonPressed()) {
+        spoorwegOvergangWestRoodExit();
+        spoorwegOvergangState = ONTRUIMINGS_TIJD;
+        spoorwegOntruimingsTijdEntry();
       }
       break;
     case ONTRUIMINGS_TIJD:
@@ -266,7 +280,7 @@ void spoorwegOvergangWestGeelExit() {
 
 // Stoplicht west rood
 void spoorwegOvergangWestRoodEntry() {
-  setTrafficLightRed(true);
+  setTrafficLightRed(false);
   spoorwegPrevious = millis();
 }
 
@@ -321,7 +335,7 @@ void spoorwegKnipperGeelExit() {
   
 }
 
-// Vertrek trein
+// Vertrek trein   
 void spoorwegTreinVetrekkenEntry() {
   spoorwegPrevious = millis();
   addAmountOfTimesOpen();
