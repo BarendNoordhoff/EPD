@@ -12,10 +12,10 @@ int servoCount = maxArmRotation;
 
 Servo servo;
 
-void test() {
-  int servoPos = servo.read();
-  Serial.println(servoPos);
-}
+// void test() {
+//   int servoPos = servo.read();
+//   Serial.println(servoPos);
+// }
 
 bool isArmDown() {
   int servoPos = servo.read();

@@ -5,10 +5,16 @@ int clockPin = 10;
 unsigned long int countdownPrevious;
 unsigned long countdownInterval = 1000;
 int countDownCount = 0;
+int getCountDownCount() {
+  return countDownCount;
+}
 
 bool counterDown = false;
 bool isCounterDown() {
   return counterDown;
+}
+void setCounterDown(bool newCounterDown) {
+  counterDown = newCounterDown;
 }
 
 const int fontCount = 8;
@@ -88,14 +94,11 @@ void setShiftRegister(byte pattern) {
 
 
 void countDown() {
-  while (countDownCount < 6) {
-    if (millis() - countdownPrevious >= countdownInterval) {
-      setShiftRegister(getFont(5 - countDownCount));
-      countdownPrevious = millis();
-      countDownCount++;
-    }
+  if (millis() - countdownPrevious >= countdownInterval) {
+    setShiftRegister(getFont(5 - countDownCount));
+    countdownPrevious = millis();
+    countDownCount++;
   }
-  counterDown = true;
 }
 
 
