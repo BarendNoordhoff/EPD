@@ -5,60 +5,55 @@ const int servoPin = 11;
 const int minArmRotation = 0;
 const int maxArmRotation = 180;
 
-int servoCount = 0;
+unsigned long servoPrevious = 0;
+unsigned long servoInterval = 25;
 
-int amountOfTimesOpen = 0;
+int servoCount = maxArmRotation;
 
 Servo servo;
 
-bool isArmDown() {
-  return true;
+void test() {
+  int servoPos = servo.read();
+  Serial.println(servoPos);
 }
+
+bool isArmDown() {
+  int servoPos = servo.read();
+  return servoPos == minArmRotation;
+}
+
 bool isArmUp() {
-  return true;
+  int servoPos = servo.read();
+  return servoPos == maxArmRotation;
 }
 
 void setupServo() {
   servo.attach(servoPin);
-  servoMove(minArmRotation);
-  servoCount = maxArmRotation;
+  servoMove(servoCount);
 }
 
 void servoMove(int value) {
   servo.write(value);
 }
 
-void addAmountOfTimesOpen() {
-  amountOfTimesOpen++;
-}
-
-unsigned long servoPrevious = 0;
-unsigned long servoInterval = 1000;
-
 void servoMoveDown() {
-  unsigned long currentMillis = millis();
   int servoPos = servo.read();
-  if (servoPos != minArmRotation) {
-    if (currentMillis - servoPrevious >= servoInterval) {
-      servoCount--;
-      servoMove(servoCount);
-    }
-  } else {
-      servoCount++;
-      servoMove(servoCount);
+  if (millis() - servoPrevious >= servoInterval) {
+    servoPrevious = millis();
+  
+    servoCount -= 1;
+
+    servoMove(servoCount);
   }
 }
 
 void servoMoveUp() {
-  unsigned long currentMillis = millis();
   int servoPos = servo.read();
-  if (servoPos != maxArmRotation) {
-    if (currentMillis - servoPrevious >= servoInterval) {
-      servoCount++;
-      servoMove(servoCount);
-    }
-  } else {
-    servoCount--;
+  if (millis() - servoPrevious >= servoInterval) {
+    servoPrevious = millis();
+  
+    servoCount += 1;
+
     servoMove(servoCount);
   }
 }

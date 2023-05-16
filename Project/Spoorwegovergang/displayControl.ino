@@ -6,6 +6,11 @@ unsigned long int countdownPrevious;
 unsigned long countdownInterval = 1000;
 int countDownCount = 0;
 
+bool counterDown = false;
+bool isCounterDown() {
+  return counterDown;
+}
+
 const int fontCount = 8;
 byte font[] = {
  B11111100, // 0
@@ -81,11 +86,6 @@ void setShiftRegister(byte pattern) {
   digitalWrite(latchPin, HIGH); 
 }
 
-bool counterDown = false;
-
-bool isCounterDown() {
-  return counterDown;
-}
 
 void countDown() {
   while (countDownCount < 6) {
@@ -100,6 +100,7 @@ void countDown() {
 
 
 void resetTimer() {
-  countDownCount = 5;
+  countDownCount = 0;
   counterDown = false;
+  Serial.println("Timer is reset!");
 }

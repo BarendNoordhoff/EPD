@@ -27,7 +27,7 @@ bool southButtonPressed = false;
 bool getSouthButtonPressed() {
   return southButtonPressed;
 }
-void setSoutButtonPressed(bool newSouthButton) {
+void setSouthButtonPressed(bool newSouthButton) {
   southButtonPressed = newSouthButton;
 }
 

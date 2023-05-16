@@ -7,4 +7,10 @@ void setup() {
 void loop() {
   buttonLoop();
   spoorwegOvergangLoop();
+  // if (isArmUp()) {
+  //   Serial.println("The arm is up!");
+  // }
+  // if (isArmDown()) {
+  //   Serial.println("The arm is down");
+  // }
 }

@@ -74,17 +74,18 @@ void setTrafficLightRed(bool West) {
 
 
 void blinkYellowLights() {
+  setTrafficLightsRed();
+  
   if (millis() - yellowlightPrevious >= yellowlightInterval) {
     yellowlightPrevious = millis();
+    yellowLightOn = !yellowLightOn;
+  }
   
-    if (yellowLightOn) {
-      turnLedOn(1);
-      turnLedOn(4);
-      yellowLightOn = false;
-    } else {
-      turnLedOff(1);
-      turnLedOff(4);
-      yellowLightOn = true;
-    }
+  if (yellowLightOn) {
+    turnLedOn(1);
+    turnLedOn(4);
+  } else {
+    turnLedOff(1);
+    turnLedOff(4);
   }
 }

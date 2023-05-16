@@ -28,14 +28,13 @@ void spoorwegOvergangSetup() {
   ledSetup();
   setupShiftRegister();
   setupServo();
-
   
   spoorwegOvergangState = RUST;
   spoorwegRustEntry();
 }
 
 void spoorwegOvergangLoop() {
-  Serial.println(spoorwegOvergangState);
+  // Serial.println(spoorwegOvergangState);
   switch(spoorwegOvergangState) {
     case RUST:
       spoorwegRustDo();
@@ -52,9 +51,10 @@ void spoorwegOvergangLoop() {
         spoorwegOvergangState = STOPLICHT_OOST_GROEN;
         spoorwegOvergangEastGroenEntry();
       } else if (getNorthButtonPressed() || getSouthButtonPressed()) {
+
         spoorwegRustExit();
-        spoorwegOvergangState = AANKOMST_TREIN;
-        spoorwegAankomstTreinEntry();
+        spoorwegOvergangState = ONTRUIMINGS_TIJD;
+        spoorwegOntruimingsTijdEntry();
       }
       break;
     case STOPLICHT_OOST_GROEN:
@@ -64,7 +64,9 @@ void spoorwegOvergangLoop() {
         spoorwegOvergangEastGroenExit();
         spoorwegOvergangState = STOPLICHT_OOST_GEEL;
         spoorwegOvergangEastGeelEntry();
+
       } else if (getNorthButtonPressed() || getSouthButtonPressed()) {
+
         spoorwegOvergangEastGroenExit();
         spoorwegOvergangState = ONTRUIMINGS_TIJD;
         spoorwegOntruimingsTijdEntry();
@@ -78,6 +80,7 @@ void spoorwegOvergangLoop() {
         spoorwegOvergangState = STOPLICHT_OOST_ROOD;
         spoorwegOvergangEastRoodEntry();
       } else if (getNorthButtonPressed() || getSouthButtonPressed()) {
+
         spoorwegOvergangEastGeelExit();
         spoorwegOvergangState = ONTRUIMINGS_TIJD;
         spoorwegOntruimingsTijdEntry();
@@ -91,6 +94,7 @@ void spoorwegOvergangLoop() {
         spoorwegOvergangState = RUST;
         spoorwegRustEntry();
       } else if (getNorthButtonPressed() || getSouthButtonPressed()) {
+
         spoorwegOvergangEastRoodExit();
         spoorwegOvergangState = ONTRUIMINGS_TIJD;
         spoorwegOntruimingsTijdEntry();
@@ -104,6 +108,7 @@ void spoorwegOvergangLoop() {
         spoorwegOvergangState = STOPLICHT_WEST_GEEL;
         spoorwegOvergangWestGeelEntry();
       } else if (getNorthButtonPressed() || getSouthButtonPressed()) {
+
         spoorwegOvergangWestGroenExit();
         spoorwegOvergangState = ONTRUIMINGS_TIJD;
         spoorwegOntruimingsTijdEntry();
@@ -117,6 +122,7 @@ void spoorwegOvergangLoop() {
         spoorwegOvergangState = STOPLICHT_WEST_ROOD;
         spoorwegOvergangWestRoodEntry();
       } else if (getNorthButtonPressed() || getSouthButtonPressed()) {
+
         spoorwegOvergangWestGeelExit();
         spoorwegOvergangState = ONTRUIMINGS_TIJD;
         spoorwegOntruimingsTijdEntry();
@@ -130,6 +136,7 @@ void spoorwegOvergangLoop() {
         spoorwegOvergangState = RUST;
         spoorwegRustEntry();
       } else if (getNorthButtonPressed() || getSouthButtonPressed()) {
+
         spoorwegOvergangWestRoodExit();
         spoorwegOvergangState = ONTRUIMINGS_TIJD;
         spoorwegOntruimingsTijdEntry();
@@ -137,24 +144,28 @@ void spoorwegOvergangLoop() {
       break;
     case ONTRUIMINGS_TIJD:
       spoorwegOntruimingsTijdDo();
+      setSouthButtonPressed(false);
+      setNorthButtonPressed(false);
 
       if (getSouthButtonPressed() || getNorthButtonPressed()) {
-
+        Serial.println("Situatie 1");
         spoorwegOntruimingsTijdExit();
         spoorwegOvergangState = AANKOMST_TREIN;
         spoorwegAankomstTreinEntry();
-      } else if (getWestButtonPressed() && millis() - ontruimingsInterval >= spoorwegPrevious ) {
+      } else if (getWestButtonPressed() && millis() - spoorwegPrevious >= ontruimingsInterval ) {
+        Serial.println("Situatie 2");
         setWestButtonPressed(false);
 
         spoorwegOntruimingsTijdExit();
         spoorwegOvergangState = STOPLICHT_WEST_GROEN;
-        spoorwegOvergangWestRoodEntry();
-      } else if (getEastButtonPressed() && millis() - ontruimingsInterval >= spoorwegPrevious ) {
+        spoorwegOvergangWestGroenEntry();
+      } else if (getEastButtonPressed() && millis() -  spoorwegPrevious >= ontruimingsInterval ) {
+        Serial.println("Situatie 3");
         setEastButtonPressed(false);
 
         spoorwegOntruimingsTijdExit();
         spoorwegOvergangState = STOPLICHT_OOST_GROEN;
-        spoorwegOvergangEastRoodEntry();
+        spoorwegOvergangEastGroenEntry();
       }
       break;
     case AANKOMST_TREIN:
@@ -163,13 +174,13 @@ void spoorwegOvergangLoop() {
       if (isArmDown()) {
         spoorwegAankomstTreinExit();
         spoorwegOvergangState = KNIPPER_GEEL;
-        spoorwegTreinVetrekkenExit();
+        spoorwegKnipperGeelEntry();
       }
       break;
     case KNIPPER_GEEL:
       spoorwegKnipperGeelDo();
       if (getSouthButtonPressed() && getNorthButtonPressed()) {
-        setWestButtonPressed(false);
+        setWestButtonPressed(false);  
         setEastButtonPressed(false);
         
         spoorwegKnipperGeelExit();
@@ -294,6 +305,7 @@ void spoorwegOvergangWestRoodExit() {
 
 // Ontruiming
 void spoorwegOntruimingsTijdEntry() {
+  setTrafficLightsYellow();
   spoorwegPrevious = millis();
 }
 
@@ -338,7 +350,6 @@ void spoorwegKnipperGeelExit() {
 // Vertrek trein   
 void spoorwegTreinVetrekkenEntry() {
   spoorwegPrevious = millis();
-  addAmountOfTimesOpen();
 }
 
 void spoorwegTreinVetrekkenDo() {
@@ -360,8 +371,8 @@ void spoorwegAftellenEntry() {
 void spoorwegAftellenDo() {
   turnAllLedOff();
   blinkYellowLights();
-  countDown();
   tickBuzzerThreeTimes();
+  countDown();
 }
 
 void spoorwegAftellenExit() {
