@@ -16,6 +16,10 @@ int spoorwegOvergangState;
 
 int spoorwegInterval = 3000;
 unsigned long spoorwegPrevious;
+bool waitedForGreenLight;
+void setWaitedForGreenLight(bool newWaitedForGreenLight) {
+  waitedForGreenLight = newWaitedForGreenLight;
+}
 
 int greenLightInterval = 3000;
 int yellowLightInterval = 2000;
@@ -60,16 +64,22 @@ void spoorwegOvergangLoop() {
     case STOPLICHT_OOST_GROEN:
       spoorwegOvergangEastGroenDo();
 
-      if (millis() - spoorwegPrevious >= greenLightInterval) {
-        spoorwegOvergangEastGroenExit();
-        spoorwegOvergangState = STOPLICHT_OOST_GEEL;
-        spoorwegOvergangEastGeelEntry();
+      if(getNorthButtonPressed() || getSouthButtonPressed()) {
+        setWaitedForGreenLight(true);
+      }
 
-      } else if (getNorthButtonPressed() || getSouthButtonPressed()) {
-
-        spoorwegOvergangEastGroenExit();
-        spoorwegOvergangState = ONTRUIMINGS_TIJD;
-        spoorwegOntruimingsTijdEntry();
+      if (!waitedForGreenLight) {
+        if (millis() - spoorwegPrevious >= spoorwegInterval) {
+          spoorwegOvergangEastGroenExit();
+          spoorwegOvergangState = STOPLICHT_OOST_GEEL;
+          spoorwegOvergangEastGeelEntry();
+        }
+      } else {
+        if (millis() - spoorwegPrevious >= getPodmeterValue ) {
+          spoorwegOvergangEastGroenExit();
+          spoorwegOvergangState = ONTRUIMINGS_TIJD;
+          spoorwegOntruimingsTijdEntry();
+        }
       }
       break;
     case STOPLICHT_OOST_GEEL:
@@ -103,15 +113,22 @@ void spoorwegOvergangLoop() {
     case STOPLICHT_WEST_GROEN:
       spoorwegOvergangWestGroenDo();
 
-      if (millis() - spoorwegPrevious >= greenLightInterval) {
-        spoorwegOvergangWestGroenExit();
-        spoorwegOvergangState = STOPLICHT_WEST_GEEL;
-        spoorwegOvergangWestGeelEntry();
-      } else if (getNorthButtonPressed() || getSouthButtonPressed()) {
+      if(getNorthButtonPressed() || getSouthButtonPressed()) {
+        setWaitedForGreenLight(true);
+      }
 
-        spoorwegOvergangWestGroenExit();
-        spoorwegOvergangState = ONTRUIMINGS_TIJD;
-        spoorwegOntruimingsTijdEntry();
+      if (!waitedForGreenLight) {
+        if (millis() - spoorwegPrevious >= greenLightInterval) {
+          spoorwegOvergangWestGroenExit();
+          spoorwegOvergangState = STOPLICHT_WEST_GEEL;
+          spoorwegOvergangWestGeelEntry();
+        } 
+      } else {
+        if (millis() - spoorwegPrevious >= getPodmeterValue()) {
+          spoorwegOvergangWestGroenExit();
+          spoorwegOvergangState = ONTRUIMINGS_TIJD;
+          spoorwegOntruimingsTijdEntry();
+        }
       }
       break;
     case STOPLICHT_WEST_GEEL:
@@ -130,13 +147,11 @@ void spoorwegOvergangLoop() {
       break;
     case STOPLICHT_WEST_ROOD:
       spoorwegOvergangWestRoodDo();
- 
       if (millis() - spoorwegPrevious >= redLightInterval) {
         spoorwegOvergangWestRoodExit();
         spoorwegOvergangState = RUST;
         spoorwegRustEntry();
       } else if (getNorthButtonPressed() || getSouthButtonPressed()) {
-
         spoorwegOvergangWestRoodExit();
         spoorwegOvergangState = ONTRUIMINGS_TIJD;
         spoorwegOntruimingsTijdEntry();
@@ -229,6 +244,7 @@ void spoorwegOvergangEastGroenDo() {
 }
 
 void spoorwegOvergangEastGroenExit() {
+  spoorwegPrevious = millis();
   // setTrafficLightGreen(true);
 }
 
@@ -271,7 +287,7 @@ void spoorwegOvergangWestGroenDo() {
 }
 
 void spoorwegOvergangWestGroenExit() {
-  
+  setWaitedForGreenLight(false);
 }
 
 // Stoplicht west geel

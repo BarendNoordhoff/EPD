@@ -7,10 +7,11 @@ void setup() {
 void loop() {
   buttonLoop();
   spoorwegOvergangLoop();
-  // if (isArmUp()) {
-  //   Serial.println("The arm is up!");
-  // }
-  // if (isArmDown()) {
-  //   Serial.println("The arm is down");
-  // }
+  if (Serial.available() > 0) {
+    char input = Serial.read();
+
+    if (input == 'r') {
+      Serial.println("Aantal keren gesloten: " + getAmountOfTimesClosed());
+    }
+  }
 }

@@ -9,13 +9,16 @@ unsigned long servoPrevious = 0;
 unsigned long servoInterval = 25;
 
 int servoCount = maxArmRotation;
+int amountOfTimesClosed = 0;
+void addToClosedCount() {
+  amountOfTimesClosed++;
+}
+int getAmountOfTimesClosed() {
+  return amountOfTimesClosed;
+}
 
 Servo servo;
 
-// void test() {
-//   int servoPos = servo.read();
-//   Serial.println(servoPos);
-// }
 
 bool isArmDown() {
   int servoPos = servo.read();
@@ -44,6 +47,9 @@ void servoMoveDown() {
     servoCount -= 1;
 
     servoMove(servoCount);
+  }
+  if (servoCount <= 0) {
+    addToClosedCount();
   }
 }
 
