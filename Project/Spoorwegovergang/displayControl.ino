@@ -45,6 +45,7 @@ void setupShiftRegister() {
   pinMode(latchPin, OUTPUT);
   pinMode(clockPin, OUTPUT);
   pinMode(dataPin, OUTPUT);
+  clearShiftRegister();
 }
 
 void clearShiftRegister() {

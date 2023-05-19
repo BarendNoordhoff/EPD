@@ -40,7 +40,7 @@ void spoorwegOvergangSetup() {
 }
 
 void spoorwegOvergangLoop() {
-  // Serial.println(spoorwegOvergangState);
+  Serial.println(spoorwegOvergangState);
   switch(spoorwegOvergangState) {
     case RUST:
       spoorwegRustDo();
@@ -207,14 +207,12 @@ void spoorwegOvergangLoop() {
         spoorwegOvergangState = AANKOMST_TREIN;
         spoorwegAankomstTreinEntry();
       } else if (getWestButtonPressed() && millis() - spoorwegPrevious >= ontruimingsInterval ) {
-        Serial.println("Situatie 2");
         setWestButtonPressed(false);
 
         spoorwegOntruimingsTijdExit();
         spoorwegOvergangState = STOPLICHT_WEST_GROEN;
         spoorwegOvergangWestGroenEntry();
       } else if (getEastButtonPressed() && millis() -  spoorwegPrevious >= ontruimingsInterval ) {
-        Serial.println("Situatie 3");
         setEastButtonPressed(false);
 
         spoorwegOntruimingsTijdExit();
@@ -383,7 +381,7 @@ void spoorwegAankomstTreinEntry() {
 void spoorwegAankomstTreinDo() {
   turnAllLedOff();
   blinkYellowLights();
-  tickBuzzer();
+  tickBuzzerThreeTimes();
   servoMoveDown();
 }
 
