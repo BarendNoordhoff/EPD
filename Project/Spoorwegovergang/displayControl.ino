@@ -4,7 +4,7 @@ int clockPin = 10;
 
 unsigned long int countdownPrevious;
 unsigned long countdownInterval = 1000;
-int countDownCount = 0;
+int countDownCount = 6;
 int getCountDownCount() {
   return countDownCount;
 }
@@ -96,15 +96,20 @@ void setShiftRegister(byte pattern) {
 
 void countDown() {
   if (millis() - countdownPrevious >= countdownInterval) {
-    setShiftRegister(getFont(5 - countDownCount));
     countdownPrevious = millis();
-    countDownCount++;
+    countDownCount--;
+
+    if(countDownCount < 0) {
+      countDownCount = 0;
+      counterDown = true;
+    }
+
+    setShiftRegister(getFont(countDownCount));
   }
 }
 
 
 void resetTimer() {
-  countDownCount = 0;
+  countDownCount = 6;
   counterDown = false;
-  Serial.println("Timer is reset!");
 }

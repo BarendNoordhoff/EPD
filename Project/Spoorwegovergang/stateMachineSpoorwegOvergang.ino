@@ -426,12 +426,9 @@ void spoorwegAftellenEntry() {
 
 void spoorwegAftellenDo() {
   turnAllLedOff();
-  while (getCountDownCount() < 6) {
-    countDown();
-    blinkYellowLights();
-    tickBuzzerThreeTimes();
-  }
-  setCounterDown(true);
+  countDown();
+  blinkYellowLights();
+  tickBuzzerThreeTimes();
 }
 
 void spoorwegAftellenExit() {
