@@ -1,6 +1,19 @@
 int buttonPins[] = {A0, A1, A2, A3};
 int buttonCount = 4;
 
+int queueTrail = 0;
+int queue[] = {};
+
+unsigned long buttonPrevious = 0;
+
+int getQueue(int index) {
+  return queue[index];
+}
+
+int getQueueTrail() {
+  return queueTrail;
+}
+
 // West button control
 
 bool westButtonPressed = false;
@@ -71,5 +84,18 @@ void buttonLoop() {
     westButtonPressed = true;
   } else {
     westButtonPressed = false;
+  }
+  long currentMillis = millis();
+
+  if (northButtonPressed && currentMillis - buttonPrevious >= 50) {
+    buttonPrevious = currentMillis;
+    queue[queueTrail] = 1;
+    queueTrail++;
+  }
+  
+  if (southButtonPressed && currentMillis - buttonPrevious >= 50) {
+    buttonPrevious = currentMillis;
+    queue[queueTrail] = 1;
+    queueTrail++;
   }
 }
